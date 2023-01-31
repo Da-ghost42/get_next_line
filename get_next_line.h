@@ -6,7 +6,7 @@
 /*   By: mboutuil <mboutuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 22:44:57 by mboutuil          #+#    #+#             */
-/*   Updated: 2023/01/31 15:33:50 by mboutuil         ###   ########.fr       */
+/*   Updated: 2023/01/31 17:31:12 by mboutuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int     jumps_checker(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*get_rest(char *s);
-char	*get_line(char *s);
+char	*ft_get_line(char *s);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int ft_strlen(char *s);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strdup(const char *todup);
+char	*ft_strdup(char *todup);
 
 #endif
