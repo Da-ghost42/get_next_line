@@ -6,7 +6,7 @@
 /*   By: mboutuil <mboutuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 22:40:22 by mboutuil          #+#    #+#             */
-/*   Updated: 2023/01/31 15:45:10 by mboutuil         ###   ########.fr       */
+/*   Updated: 2023/01/31 16:35:58 by mboutuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,11 @@ char	*get_rest(char *s)
 		return (NULL);
 	e = ft_strlen(s);
 	st = 1;
-
+	sub = NULL;
 	while (s[st] && s[st] != '\n')
 		st++;
 	if (s[st] == '\n')
 		sub = ft_substr(s, st, e - st);
-	// printf("sub = %s\n", sub);
 	return (sub);
 }
 
@@ -50,11 +49,13 @@ char	*get_line(char *s)
 	char	*sub;
 
 	i = 0;
-	// printf("sub = %s\n", s);
+
+	if(!s)
+		return (NULL);
 	while (s[++i])
 		if (s[i] == '\n')
 			break;
-	sub = ft_substr(s, 0, i + 1);
+	sub = ft_substr(s, 0, i);
 	return (sub);
 }
 
@@ -63,28 +64,24 @@ char	*get_next_line(int fd)
 	char		*s;
 	char		*re;
 	static char	*hold;
-	int			i;
 	int			j;
 
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	i = 1;
-	while (i && !ft_strchr(hold, '\n'))
+	re = NULL;
+	while (1 && !ft_strchr(hold, '\n'))
 	{
 		re = (char *) malloc(BUFFER_SIZE + 1);
 		if (!re)
 			return (NULL);
 		j = read(fd, re, BUFFER_SIZE);
 		if (j < 0)
-			return (free(re), NULL);		
-		// if (!re)
-		// 	return (free(re), NULL);
+			return (free(re), NULL);
+		if (j == 0)
+			{free(re); break;}	
 		re[j] = '\0';
 		hold = ft_strjoin(hold, re);
 		free(re);
-		// printf("\nhey\n");
-		// if (ft_strchr(hold, '\n'))
-		// 	break;
 	}
 	s = get_line(hold);
 	hold = get_rest(hold);
@@ -95,7 +92,7 @@ int main()
 {
 	int fd;
 
-	fd = open("j.txt",O_RDONLY);
+	fd = open("get_next_line.h",O_RDONLY);
 	char *p;
 	// p = get_next_line(fd);
 	// printf("%s", p);
@@ -107,6 +104,6 @@ int main()
 	while ((p = get_next_line(fd)))
 		{
 			printf("%s", p);
-			sleep(1);
+			// sleep(1);
 		}
 }
