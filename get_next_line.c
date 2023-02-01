@@ -5,109 +5,105 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mboutuil <mboutuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/30 22:40:22 by mboutuil          #+#    #+#             */
-/*   Updated: 2023/01/31 17:32:05 by mboutuil         ###   ########.fr       */
+/*   Created: 2023/02/01 18:05:34 by mboutuil          #+#    #+#             */
+/*   Updated: 2023/02/01 18:07:08 by mboutuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// int	jumps_checker(char *s)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	if (!s)
-// 		return (0);
-// 	while (s[++i])
-// 		if (s[i] != '\n')
-// 			return (1);
-// 	return (0);
-// }
-
-char	*get_rest(char *s)
+char	*read_func(int fd)
 {
-	int		st;
-	int		e;
-	char	*sub;
-// leaks
-	if (!s)
-		return (free(s), NULL);
-	e = ft_strlen(s);
-	st = 1;
-	sub = NULL;
-	while (s[st] && s[st] != '\n')
-		st++;
-	if (s[st] == '\n')
-		sub = ft_substr(s, st, e - st);
-	return (sub);
+	int		count;
+	char	*line;
+	char	*tmp;
+	char	*tmp2;
+
+	line = NULL;
+	tmp = malloc(BUFFER_SIZE + 1);
+	if (!tmp)
+		return (NULL);
+	while (!ft_strfind(line, '\n'))
+	{
+		count = read(fd, tmp, BUFFER_SIZE);
+		if (count < 0)
+			return (free(tmp), NULL);
+		if (count == 0)
+			break ;
+		tmp[count] = 0;
+		tmp2 = line;
+		line = ft_strjoin(line, tmp);
+		if (!line)
+			return (free(tmp), free(tmp2), NULL);
+		free(tmp2);
+	}
+	return (free(tmp), line);
 }
 
-char	*ft_get_line(char *s)
+char	*get_rest(char *hold)
 {
+	int		nl;
 	int		i;
-	char	*sub;
+	char	*new_hold;
 
+	nl = 0;
 	i = 0;
+	new_hold = NULL;
+	while (hold[nl] && hold[nl] != '\n')
+		nl++;
+	if (hold[nl] && hold[nl +1] && hold[nl] == '\n')
+	{
+		new_hold = malloc(ft_strlenght(hold) - nl + 1);
+		while (hold[++nl])
+			new_hold[i++] = hold[nl];
+			new_hold[i] = 0;
+	}
+	return (new_hold);
+}
 
-	if(!s)
-		return (NULL);
-	if (!ft_strchr(s, '\n'))
-		return (s);
-	while (s[++i])
-		if (s[i] == '\n')
-			break;
-	sub = ft_substr(s, 0, i);
-	return (sub);
+char	*get_line(char *line)
+{
+	char    *str;
+	int     nl;
+
+	str = NULL;
+	nl = 0;
+	while (line && line[nl] && line[nl] != '\n')
+		nl++;
+	if (line && line[nl] == '\n')
+	{
+		str = malloc(nl + 2);
+		if (!str)
+			return (free(line), NULL);
+		ft_memcpy(str, line, nl + 1);
+		str[nl + 1] = 0;
+	}
+	return (free(line), str);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*s;
-	char		*re;
-	static char	*hold;
-	int			j;
+	static char *hold;
+	char        *tmp;
+	char *line;
 
-	if (fd < 0 || BUFFER_SIZE < 0)
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	re = (char *) malloc(BUFFER_SIZE + 1);
-	if (!re)
-		return (NULL);
-	while (1)
+	line = read_func(fd);
+	if (hold)
 	{
-		j = read(fd, re, BUFFER_SIZE);
-		if (j < 0)
-			return (free(re), NULL);
-		if (j == 0)
-			break;
-		re[j] = '\0';
-		hold = ft_strjoin(hold, re);
-		if (ft_strchr(hold, '\n'))
-			break;
+		tmp = line;
+		line = ft_strjoin(hold, line);
+		free(tmp);
+		free(hold);
+		hold = NULL;
 	}
-	free(re);
-	s = ft_get_line(hold);
-	hold = get_rest(hold);
-	return (s);
+	if (line && ft_strfind(line, '\n'))
+	{
+		if (ft_strlenght(line) > 1)
+			hold = get_rest(line);
+		line = get_line(line);
+	}
+	return (line);
 }
-
-// int main()
-// {
-// 	int fd;
-
-// 	fd = open("get_next_line.h",O_RDONLY);
-// 	char *p;
-// 	// p = get_next_line(fd);
-// 	// printf("%s", p);
-
-// 	// p = get_next_line(fd);
-// 	// printf("%s", p);
-// 	// p = get_next_line(fd);
-// 	// printf("%s", p);
-// 	while ((p = get_next_line(fd)))
-// 		{
-// 			printf("%s", p);
-// 			free(p);
-// 			// sleep(1);
-// 		}
-// }
