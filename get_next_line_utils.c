@@ -6,36 +6,36 @@
 /*   By: mboutuil <mboutuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:05:28 by mboutuil          #+#    #+#             */
-/*   Updated: 2023/02/01 18:05:29 by mboutuil         ###   ########.fr       */
+/*   Updated: 2023/02/02 00:25:03 by mboutuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int ft_strlenght(char *str)
+int	ft_strlenght(char *str)
 {
-    int i;
+	int	i;
 
-    if (!str)
-        return 0;
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-int ft_strfind(char *str, char c)
+int	ft_strfind(char *str, char c)
 {
-    int i;
+	int	i;
 
-    if (!str)
-        return (0);
-    i = 0;
-    while (str[i] && str[i] != c)
-        i++;
-    if (str[i] && str[i] ==  c)
-        return (i + 1);
-    return (0);
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] && str[i] != c)
+		i++;
+	if (str[i] && str[i] == c)
+		return (i + 1);
+	return (0);
 }
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
@@ -66,34 +66,10 @@ char	*ft_strdup(char *todup)
 	str = (char *)malloc(n + 1);
 	if (!str)
 		return (NULL);
-    ft_memcpy(str, todup, n);
+	ft_memcpy(str, todup, n);
 	str[n] = '\0';
 	return (str);
 }
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*p;
-	int		len_s1;
-	int		len_s2;
-
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s1)
-		return (ft_strdup(s2));
-	if (!s2)
-		return (ft_strdup(s1));
-	len_s1 = ft_strlenght(s1);
-	len_s2 = ft_strlenght(s2);
-	p = (char *)malloc(len_s1 + len_s2 + 1);
-	if (!p)
-		return (NULL);
-	ft_memcpy (p, s1,len_s1);
-	ft_memcpy (p + len_s1, s2,len_s2);
-	p[len_s1 + len_s2] =  0;
-	return (p);
-}
-
 
 char	*ft_substr(char *s, unsigned int start, size_t len)
 {

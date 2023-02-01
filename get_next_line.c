@@ -6,11 +6,34 @@
 /*   By: mboutuil <mboutuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:05:34 by mboutuil          #+#    #+#             */
-/*   Updated: 2023/02/01 18:07:08 by mboutuil         ###   ########.fr       */
+/*   Updated: 2023/02/02 00:24:42 by mboutuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*p;
+	int		len_s1;
+	int		len_s2;
+
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+		return (ft_strdup(s1));
+	len_s1 = ft_strlenght(s1);
+	len_s2 = ft_strlenght(s2);
+	p = (char *)malloc(len_s1 + len_s2 + 1);
+	if (!p)
+		return (NULL);
+	ft_memcpy (p, s1, len_s1);
+	ft_memcpy (p + len_s1, s2, len_s2);
+	p[len_s1 + len_s2] = 0;
+	return (p);
+}
 
 char	*read_func(int fd)
 {
@@ -63,8 +86,8 @@ char	*get_rest(char *hold)
 
 char	*get_line(char *line)
 {
-	char    *str;
-	int     nl;
+	char	*str;
+	int		nl;
 
 	str = NULL;
 	nl = 0;
@@ -83,9 +106,9 @@ char	*get_line(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char *hold;
-	char        *tmp;
-	char *line;
+	static char	*hold;
+	char		*tmp;
+	char		*line;
 
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
