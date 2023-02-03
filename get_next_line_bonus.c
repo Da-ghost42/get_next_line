@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mboutuil <mboutuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/01 18:05:34 by mboutuil          #+#    #+#             */
-/*   Updated: 2023/02/03 15:12:08 by mboutuil         ###   ########.fr       */
+/*   Created: 2023/02/02 14:07:31 by mboutuil          #+#    #+#             */
+/*   Updated: 2023/02/02 15:00:37 by mboutuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include"get_next_line_bonus.h"
 
 char	*ft_strjoin(char *s1, char *s2)
 {
@@ -106,7 +106,7 @@ char	*get_line(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*hold;
+	static char	*hold[10240];
 	char		*tmp;
 	char		*line;
 
@@ -114,18 +114,18 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = read_func(fd);
-	if (hold)
+	if (hold[fd])
 	{
 		tmp = line;
-		line = ft_strjoin(hold, line);
+		line = ft_strjoin(hold[fd], line);
 		free(tmp);
-		free(hold);
-		hold = NULL;
+		free(hold[fd]);
+		hold[fd] = NULL;
 	}
 	if (line && ft_strfind(line, '\n'))
 	{
 		if (ft_strlenght(line) > 1)
-			hold = get_rest(line);
+			hold[fd] = get_rest(line);
 		line = get_line(line);
 	}
 	return (line);

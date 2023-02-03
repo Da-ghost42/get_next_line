@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mboutuil <mboutuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/01 18:05:28 by mboutuil          #+#    #+#             */
-/*   Updated: 2023/02/02 14:14:36 by mboutuil         ###   ########.fr       */
+/*   Created: 2023/02/02 14:08:44 by mboutuil          #+#    #+#             */
+/*   Updated: 2023/02/02 14:14:28 by mboutuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlenght(char *str)
 {
